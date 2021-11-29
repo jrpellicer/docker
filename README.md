@@ -1,2 +1,2 @@
 # docker
-Mnual de Docker paso a paso
+Manual de Docker paso a paso
