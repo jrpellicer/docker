@@ -220,6 +220,7 @@ Si paramos y eliminamos el contenedor, al no eliminarse el volumen,los datos no 
 	docker rm mibbdd
 
 Podemos crear otro contenedor usando el mismo volumen y comprobamos que los datos no se han perdido.
+
 	docker run --name otrabbdd -v mis_datos_sql:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=123456 -d mysql
 	docker exec -it otrabbdd mysql -p123456 -e "USE instituto; SELECT * FROM alumnos;"
 
