@@ -105,6 +105,10 @@ Ejecución de un contenedor con mapeo de directorios (bind mount)
 	docker run -dti --name web -p 80:80 -v "$PWD":/usr/local/apache2/htdocs/ httpd
 	docker run -dti --name web -p 80:80 -v /home/usuario/directorio:/usr/local/apache2/htdocs/ httpd
 
+Ejecución de un contenedor pasando una variable de entorno
+
+	docker run --name mibbdd -e MYSQL_ROOT_PASSWORD=123456 -d mysql
+
 ## Ejecución de comandos al lanzar el contenedor
 Podemos ejecutar un comando dentro del contenedor al lanzarse. El contenedor se para una vez ejecutado el comando
 
@@ -220,13 +224,52 @@ Si paramos y eliminamos el contenedor, al no eliminarse el volumen,los datos no 
 	docker rm mibbdd
 
 Podemos crear otro contenedor usando el mismo volumen y comprobamos que los datos no se han perdido.
-
+	
 	docker run --name otrabbdd -v mis_datos_sql:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=123456 -d mysql
 	docker exec -it otrabbdd mysql -p123456 -e "USE instituto; SELECT * FROM alumnos;"
 
 # Portainer
+Portainer es una aplicación empaquetada en un contenedor que nos permite administrar gráficamente todos los elementos de Docker (imágenes, contenedores, volúmenes, redes, ...), además de gestionar clusters, plantillas de imágenes y muchas cosas más.
+
+Para instalar portainer creamos un volumen, lo montamos al crear el contenedor y exponemos el puerto 9000, que será por el que accedamos a la aplicación mediante un navegador.
+
+	docker volume create portainer_data
+	docker run -d -p 9000:9000 -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer
+
 # Redes
 # Limpieza del sistema
+Podemos ver la ocupación en disco de todos los elementos docker con el comando:
+
+	docker system df
+
+Eliminación de las imágenes que no contengan ningún contenedor asociado
+
+	docker image prune -a
+
+Eliminación de los contenedores parados
+
+	docker container prune
+
+Eliminación de los volúmenes no usados por ningún contenedor
+
+	docker volume prune
+
+Eliminación de todos los elementos que no estén en uso
+
+	docker system prune
+	
 # Creación de imágenes
-# Docker Compose
+Docker permite la creación de imágenes de dos modos:
+- A partir de un contenedor existente
+- Mediante un archivo Dockerfile
+
+## Creación de imágenes a partir de contenedores
+Para convertir un contenedor en una imagen utilizamos el mandato commit:
+
+	docker commit contenedor imagen
+
+
+## Creación de imágenes mediante archivo Dockerfile
+
 # Portabilidad y copia de seguridad de datos
+# Docker Compose
