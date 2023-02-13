@@ -15,12 +15,16 @@ Para comprobar la información de funcionamiento:
 	docker info
 
 {: .warning }
-En algunas ocasiones es necesario reiniciar el sistema con reboot
+En algunas ocasiones es necesario reiniciar el sistema con reboot.
 
 Añadimos nuestro usuario al grupo *docker* para tener privilegios de ejecución sobre docker:
 
-	usermod usuario -aG docker
+	usermod $USER -aG docker
 
+Para que los cambios en el grupo surtan efecto en la sesión iniciada podemos ejecutar el siguiente comando:
+
+	newgrp docker
 
 {: .note }
-Para que los cambios surtan efecto es necesario cerrar la sesión del usuario y volver a iniciarla.
+Si nos sigue pidiendo privilegios de administrador (sudo), será necesario cerrar la sesión del usuario y volver a iniciarla.
+

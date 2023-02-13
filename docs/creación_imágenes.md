@@ -68,7 +68,7 @@ Los pasos a seguir para crear una imagen a partir de un fichero Dockerfile son l
 
 El comando para crear la imagen es:
 
-	docker build -t nombre_nueva_imagen
+	docker build -t nombre_nueva_imagen .
 
 ### Instrucciones en Dockerfile
 
@@ -245,4 +245,5 @@ Dockerfile para un contenedor Ubuntu 18.04 con el servicio SSH instalado y los m
 
 Lanzamos el comando de creación de la imagen:
 
-	docker build -t buntu_ssh
+	docker build -t ubuntu_ssh .
+
