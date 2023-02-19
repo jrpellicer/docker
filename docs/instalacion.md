@@ -21,10 +21,8 @@ Añadimos nuestro usuario al grupo *docker* para tener privilegios de ejecución
 
 	usermod $USER -aG docker
 
-Para que los cambios en el grupo surtan efecto en la sesión iniciada podemos ejecutar el siguiente comando:
-
-	newgrp docker
-
 {: .note }
-Si nos sigue pidiendo privilegios de administrador (sudo), será necesario cerrar la sesión del usuario y volver a iniciarla.
+Para que los cambios surtan efecto es necesario cerrar la sesión del usuario y volver a iniciarla.
+
+	
 

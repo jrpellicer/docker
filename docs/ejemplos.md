@@ -82,7 +82,7 @@ Levantamos los contenedores:
 
     docker-compose up
 
- Una vez ejecutados dejamos unos minutos que se inicialicen los contenedores y accedemos a la dirección IP *https://localhost:8080*
+ Una vez ejecutados dejamos unos minutos que se inicialicen los contenedores y accedemos a la dirección IP `https://localhost:8080`
 
 ## Servidor MariaDB
 
@@ -108,6 +108,42 @@ Para administrar la BBDD desde la web podemos ejecutar *adminer* como en los eje
     docker run --name mongo -p 27017:27017 -d mongo:latest
 
 ## HTTPD, PHP y MySQL
+
+Para integrar php y MySQL podemos levantar 2 contenedores con docker-compose a partir de los ficheros del repositorio de git hub:
+
+    git clone https://github.com/kodetop/docker-php-mysql.git
+    cd docker-php-mysql
+    docker-compose up -d
+
+Accedemos a `http://localhost/info.php`
+
+En el fichero `.env` se pueden cambiar los parámteros relacionados con las versiones de PHP y MySQL, así como los usuarios y contraseñas de MySQL.
+
+En el directorio `wwww` podemos crear un fichero `index.php` de comprobación de la conexión a la BBDD, con el siguiente contenido:
+
+```php
+<?php
+//These are the defined authentication environment in the db service
+
+// The MySQL service named in the docker-compose.yml.
+$host = 'mysql';
+
+// Database use name
+$user = 'dbuser';
+
+//database user password
+$pass = 'dbpass';
+
+// check the MySQL connection status
+$conn = new mysqli($host, $user, $pass);
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+} else {
+    echo "Connected to MySQL server successfully!";
+}
+?>
+```
+
 ## Imagen de Ubuntu
 
     docker run -dti --name ubuntu ubuntu:latest
@@ -162,13 +198,13 @@ Ejecutamos:
       dperson/samba -p -u "admin;qwe_123" -s "public;/mount;yes;no;no"
 
 {: .note }
-Las variables de entorno USERID y GROUPID hacen referencia al UID y GID del usuario de la máquina anfitrión que será propietario de la carpeta ./samba (por ejemplo smbuser)
+Las variables de entorno USERID y GROUPID hacen referencia al UID y GID del usuario de la máquina anfitrión que será propietario de la carpeta `./samba` (por ejemplo smbuser)
 
 ## NextCloud
 
     docker run --name nextcloud -d -v nextcloud:/var/www/html -p 8080:80 nextcloud
 
-Accedemos a hhtps://localhost/:8080 y acabamos de configurar.
+Accedemos a `hhtps://localhost/:8080` y acabamos de configurar.
 
 Podemos optar pasar por variables de entorno las opciones de configuración, seleccionando por ejemplo SQLlite:
 
@@ -178,7 +214,7 @@ Podemos optar pasar por variables de entorno las opciones de configuración, sel
       -eNEXTCLOUD_ADMIN_PASSWORD=123456 \
       nextcloud
 
-Si nos conectamos desde una IP remota, debemos pasar la variable de entorno NEXTCLOUD_TRUSTED_DOMAINS con la IP de la máquina servidor:
+Si nos conectamos desde una IP remota, debemos pasar la variable de entorno `NEXTCLOUD_TRUSTED_DOMAINS` con la IP de la máquina servidor:
 
     docker run --name nextcloud -d -v nextcloud:/var/www/html -p 8080:80 \
       -eSQLITE_DATABASE=nextclouddb \
@@ -205,9 +241,44 @@ Si nos conectamos desde una IP remota, debemos pasar la variable de entorno NEXT
     curl -sSL https://raw.githubusercontent.com/bitnami/containers/main/bitnami/moodle/docker-compose.yml > docker-compose.yml
     docker-compose up -d
 
-Dejamos un tiempo para que arranquen los servicios y accedemos a *http://localhost/* y nos validamos con el usuario **user** y contraseña **bitnami**
+Dejamos un tiempo para que arranquen los servicios y accedemos a `http://localhost/` y nos validamos con el usuario **user** y contraseña **bitnami**
 
 ## Active Directory en Samba
+
+    docker run -d -t -i \
+    --name samba \
+    --hostname lovelace \
+    --dns-search lovelace.naranjo.asir \
+    --dns 192.168.0.10 \
+    --dns 8.8.8.8 \
+    --add-host lovelace.naranjo.asir:192.168.0.10 \
+    --privileged \
+    -p 192.168.0.10:53:53 \
+    -p 192.168.0.10:53:53/udp \
+    -p 192.168.0.10:88:88 \
+    -p 192.168.0.10:88:88/udp \
+    -p 192.168.0.10:135:135 \
+    -p 192.168.0.10:137-138:137-138/udp \
+    -p 192.168.0.10:139:139 \
+    -p 192.168.0.10:389:389 \
+    -p 192.168.0.10:389:389/udp \
+    -p 192.168.0.10:445:445 \
+    -p 192.168.0.10:464:464 \
+    -p 192.168.0.10:464:464/udp \
+    -p 192.168.0.10:636:636 \
+    -p 192.168.0.10:1024-1044:1024-1044 \
+    -p 192.168.0.10:3268-3269:3268-3269 \
+    -v /etc/localtime:/etc/localtime:ro \
+    -v /data/docker/containers/samba/data/:/var/lib/samba \
+    -v /data/docker/containers/samba/config/samba:/etc/samba/external \
+    -e "DOMAIN=NARANJO.ASIR" \
+    -e "DOMAINPASS=qwe_123" \
+    -e "DNSFORWARDER=8.8.8.8" \
+    -e "HOSTIP=192.168.0.10" \
+    -e "INSECURELDAP=true" \
+    nowsci/samba-domain
+
+
 ## Python
 
 Para ejecutar un script de python almacenado en el directorio actual de nombre *your-daemon-or-script.py*
@@ -216,6 +287,32 @@ Para ejecutar un script de python almacenado en el directorio actual de nombre *
       -v "$PWD":/usr/src/myapp \
       -w /usr/src/myapp \
       python:3 python your-daemon-or-script.py
+
+## Jupyter Notebook
+
+Podemos elegir entre distintas imágenes que incorporan una serie de paquetes preinstalados. Las imágenes a elegir son:
+
+- jupyter/base-notebook
+- jupyter/minimal-notebook
+- jupyter/r-notebook
+- jupyter/scipy-notebook
+- jupyter/tensorflow-notebook
+- jupyter/datascience-notebook
+- jupyter/pyspark-notebook
+- jupyter/all-spark-notebook
+
+Para ejecutar tecleamos:
+
+    mkdir jupyter
+    docker run -it --name jupyter -p 8888:8888 -v "$PWD"/jupyter:/home/jovyan jupyter/base-notebook
+
+Accedemeos a la dirección que nos muestra con el token corrspondiente:
+    
+    http://127.0.0.1:8888/lab?token=7bdd1b4497fc9b833c724004e837f15b823e9c713afc6ee9
+
+
+{: .note }
+Para instalar un paquete, podemos abrir una terminal dentro de la interfaz web y ejecutar el comando pip correspondiente: `pip install pymongo`
 
 ## Just-The-Docs Theme con Jekyll
 
