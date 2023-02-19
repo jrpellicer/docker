@@ -261,12 +261,4 @@ services:
 ```
 
 {: .note }
-Dos servicios distintos pueden compartir un mismo volumen
-
-
-
-   docker-compose up
-   docker-compose up -d
-   docker-compose stop
-   docker-compose down
-
+Dos servicios distintos pueden compartir un mismo volumen.
