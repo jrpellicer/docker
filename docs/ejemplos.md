@@ -243,6 +243,16 @@ Si nos conectamos desde una IP remota, debemos pasar la variable de entorno `NEX
 
 Dejamos un tiempo para que arranquen los servicios y accedemos a `http://localhost/` y nos validamos con el usuario **user** y contraseña **bitnami**
 
+Si deseamos cambiar el tamaño de los arcivos a subir (para restaurar algún curso, por ejemplo) hemos de modificar 2 parámetros del archivo de configuración **php.ini**
+
+    docker exec -it moodle_moodle_1 /bin/bash
+    apt update
+    apt install nano -y
+    nano /opt/bitnami/php/lib/php.ini	(modficar upload_max_filesize y post_max_size)
+    exit
+    docker restart moodle_moodle_1
+
+
 ## Active Directory en Samba
 
     docker run -d -t -i \
