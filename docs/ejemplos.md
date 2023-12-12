@@ -343,7 +343,10 @@ Durante la instalación de la gema puede dar un error de versiones. Se soluciona
 
     WORKDIR /usr/src/app
 
-    COPY Gemfile just-the-docs.gemspec ./
-    RUN gem install bundler:2.3.26 && bundle install
+## Just-The-Docs Theme con Jekyll (Nueva versión)
 
-    EXPOSE 4000
+Para crear un sitio local con el tema Just-the-Docs de Jekyll sin necesidad de instalar Jekyll.
+
+    git clone https://github.com/just-the-docs/just-the-docs.git
+    cd just-the-docs
+    docker run -p 4000:4000 -v $(pwd):/site bretfisher/jekyll-serve
