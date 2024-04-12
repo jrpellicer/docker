@@ -92,7 +92,7 @@ Levantamos los contenedores:
 
 En lugar de hacerlo con *docker-compose* muestro cómo se haría con lanzamientos de contenedores independientes.
 
-    docker run -d --name maria -p 3306:3306 -eMARIADB_ROOT_PASSWORD=123456 mariadb/server
+    docker run -d --name maria -p 3306:3306 -eMARIADB_ROOT_PASSWORD=123456 mariadb
     docker run -d --name adminer --link maria:db -p 8080:8080 adminer
 
 ## Servidor PostgresSQL
