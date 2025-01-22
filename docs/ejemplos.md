@@ -350,3 +350,13 @@ Para crear un sitio local con el tema Just-the-Docs de Jekyll sin necesidad de i
     git clone https://github.com/just-the-docs/just-the-docs.git
     cd just-the-docs
     docker run -p 4000:4000 -v $(pwd):/site bretfisher/jekyll-serve
+
+## MkDocs con Jekyll
+
+Para crear un sitio local con el tema MkDocs de Jekyll sin necesidad de instalar Jekyll.
+
+EJEMPLO CON UN REPOSITORIO LLAMADO awsasir:
+
+    git clone https://github.com/jrpellicer/awsasir.git
+    cd awsasir
+    docker run --rm -it -p 8000:8000 -v ${PWD}:/docs squidfunk/mkdocs-material
