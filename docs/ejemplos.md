@@ -252,6 +252,17 @@ Si deseamos cambiar el tamaño de los arcivos a subir (para restaurar algún cur
     exit
     docker restart moodle_moodle_1
 
+## Grafana
+
+    docker run -d --name=grafana -p 3000:3000 grafana/grafana
+
+Para ejecutar la opción oss instalando el plugin de la comunidad de MongoDb
+
+    docker run -d --name=grafana -p 3000:3000 \
+    -e GF_INSTALL_PLUGINS="https://github.com/meln5674/grafana-mongodb-community-plugin/releases/download/v0.2.0%2Brc5/meln5674-mongodb-community.zip;meln5674-mongodb-community" \
+    -e GF_PLUGINS_ALLOW_LOADING_UNSIGNED_PLUGINS=meln5674-mongodb-community \
+    grafana/grafana-oss:latest
+
 
 ## Active Directory en Samba
 
